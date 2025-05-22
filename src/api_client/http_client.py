@@ -10,18 +10,22 @@ class HttpClient:
     def set_headers(self, headers: Dict[str, str]):
         self.headers.update(headers)
 
-    def get(self, url: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        response = requests.get(url, headers=self.headers, params=params)
+    def get(self, url: str, params: Optional[Dict[str, Any]] = None, session: Optional[requests.Session] = None) -> Dict[str, Any]:
+        req = session if session else requests
+        response = req.get(url, headers=self.headers, params=params)
         return self.response_handler.handle_response(response)
 
-    def post(self, url: str, data: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        response = requests.post(url, headers=self.headers, json=data)
+    def post(self, url: str, data: Optional[Dict[str, Any]] = None, session: Optional[requests.Session] = None) -> Dict[str, Any]:
+        req = session if session else requests
+        response = req.post(url, headers=self.headers, json=data)
         return self.response_handler.handle_response(response)
 
-    def put(self, url: str, data: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        response = requests.put(url, headers=self.headers, json=data)
+    def put(self, url: str, data: Optional[Dict[str, Any]] = None, session: Optional[requests.Session] = None) -> Dict[str, Any]:
+        req = session if session else requests
+        response = req.put(url, headers=self.headers, json=data)
         return self.response_handler.handle_response(response)
 
-    def delete(self, url: str) -> Dict[str, Any]:
-        response = requests.delete(url, headers=self.headers)
+    def delete(self, url: str, session: Optional[requests.Session] = None) -> Dict[str, Any]:
+        req = session if session else requests
+        response = req.delete(url, headers=self.headers)
         return self.response_handler.handle_response(response)
